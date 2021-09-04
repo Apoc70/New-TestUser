@@ -1,36 +1,36 @@
-# Number of user accounts to create
-$UserCount = 5
-$RandomPassword = $true
+param (
+  [int]$UserCount = 5,
+  [string]$Company = 'Varunagroup',
+  [string]$UserNameCsv = '',
+  [switch]$RandomPassword,
+  [string]$TestUserPrefix = 'TestUser',
+  [string]$PreferredLanguage = 'de-DE',
+  [string]$TargetOU = 'OU=IT,dc=varunagroup,dc=de',
+  [string]$TestUserOU = 'Test User',
+  [string]$UpnDomain = 'varunagroup.de'
+)
+
 $DefaultPassword = 'Pa55w.rd'
 
 # User name prefix
 # New user object will be named TestUser1, TestUser2, ...
-$TestUserPrefix = 'TestUser'
 
 # User object properties
 $GivenName = 'Test'
 $Surname = 'User'
-$Company = 'Varunagroup'
-$JobTitle = @('Junior Consultant','Senior Consultant','Technical Consultant','Business Consultant')
-$PreferredLanguage = 'de-DE'
-
-# Name of the new organizational unit for test user object
-$TestOU = 'Test User'
-
-# Target OU path where the script creates the new OU 
-$TargetOU = 'OU=IT,dc=varunagroup,dc=de'
+$JobTitle = @('Junior Consultant','Senior Consultant','Technical Consultant','Business Consultant','Sales Professional','Team Lead')
 
 # Import Active Directory PowerShell Module
 Import-Module -Name ActiveDirectory 
 
 # Build OU Path
-$UserOUPath = ('OU={0},{1}' -f $TestOU, $TargetOU)
+$TestUserOUPath = ('OU={0},{1}' -f $TestUserOU, $TargetOU)
 
 # Check if OU exists
 $OUExists = $false
 
 try {
-   $OUExists = [adsi]::Exists("LDAP://$UserOUPath")
+   $OUExists = [adsi]::Exists("LDAP://$TestUserOUPath")
 }
 catch {
    $OUExists =$true   
@@ -38,14 +38,14 @@ catch {
 
 if(-not $OUExists) { 
    # Create new organizational unit for test users
-   New-ADOrganizationalUnit -Name $TestOU -Path $TargetOU -ProtectedFromAccidentalDeletion:$false -Confirm:$false
+   New-ADOrganizationalUnit -Name $TestUserOU -Path $TargetOU -ProtectedFromAccidentalDeletion:$false -Confirm:$false
 }
 else {
-   Write-Warning -Message ('OU {0} exists please delete the OU and user objects manually, before running this script.' -f $UserOUPath)
+   Write-Warning -Message ('OU {0} exists please delete the OU and user objects manually, before running this script.' -f $TestUserOUPath)
    Exit
 }
 
-Write-Output -InputObject ('Creating {0} user object in {1}' -f $UserCount, $UserOUPath)
+Write-Output -InputObject ('Creating {0} user object in {1}' -f $UserCount, $TestUserOUPath)
 
 # Create new user objects
 1..$UserCount | ForEach-Object {
@@ -70,8 +70,9 @@ Write-Output -InputObject ('Creating {0} user object in {1}' -f $UserCount, $Use
    -GivenName $GivenName `
    -Surname (('{0}{1}' -f $Surname, $_)) `
    -OtherAttributes @{title=$JobTitle[$random];company=$Company;preferredLanguage=$PreferredLanguage} `
-   -Path $UserOUPath `
+   -Path $TestUserOUPath `
    -AccountPassword $UserPassword `
+   -UserPrincipalName ('{0}.{1]@{2}' -f $GivenName, (('{0}{1}' -f $Surname, $_)), $UpnDomain) `
    -Enabled:$True `
    -Confirm:$false
 }
