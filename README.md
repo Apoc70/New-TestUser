@@ -1,6 +1,10 @@
 # New-TestUser.ps1
 Short script to create Active Directory test user objects.
 
+## Note
+
+The script has been archived. The script is now maintained [here](https://github.com/Apoc70/PowerShell-Scripts/tree/main/Misc/New-TestUser).
+
 ## Description
 
 The script creates a new organizational unit (OU) and a configured number of user accounts.
@@ -24,15 +28,12 @@ Written by: Thomas Stensitzki
 
 ## Stay connected
 
-- My Blog: [http://justcantgetenough.granikos.eu](http://justcantgetenough.granikos.eu)
-- Twitter: [https://twitter.com/stensitzki](https://twitter.com/stensitzki)
 - LinkedIn: [http://de.linkedin.com/in/thomasstensitzki](http://de.linkedin.com/in/thomasstensitzki)
 - Github: [https://github.com/Apoc70](https://github.com/Apoc70)
-- MVP Blog: [https://blogs.msmvps.com/thomastechtalk/](https://blogs.msmvps.com/thomastechtalk/)
-- Tech Talk YouTube Channel (DE): [http://techtalk.granikos.eu](http://techtalk.granikos.eu)
+- Tech Talk YouTube Channel (DE): [https://techtalk.granikos.eu](https://techtalk.granikos.eu)
 
 For more Office 365, Cloud Security, and Exchange Server stuff checkout services provided by Granikos
 
-- Blog: [http://blog.granikos.eu](http://blog.granikos.eu)
+- Blog: [https://blog.granikos.eu](https://blog.granikos.eu)
 - Website: [https://www.granikos.eu/en/](https://www.granikos.eu/en/)
 - Twitter: [https://twitter.com/granikos_de](https://twitter.com/granikos_de)
